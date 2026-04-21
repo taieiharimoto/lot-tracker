@@ -537,10 +537,16 @@ function applyFilters() {
     return true;
   });
   if (sortCol!==null) {
+    const metaCols = ['part','description','revision','process','supplier'];
     filteredRows.sort((a,b)=>{
-      const va=sortCol==='part'?a.partNum:(lotData[a.partNum]?.[sortCol]||'');
-      const vb=sortCol==='part'?b.partNum:(lotData[b.partNum]?.[sortCol]||'');
-      return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+      let va, vb;
+      if      (sortCol==='part')        { va=a.partNum;     vb=b.partNum; }
+      else if (sortCol==='description') { va=a.description; vb=b.description; }
+      else if (sortCol==='revision')    { va=a.revision;    vb=b.revision; }
+      else if (sortCol==='process')     { va=a.process;     vb=b.process; }
+      else if (sortCol==='supplier')    { va=a.supplier;    vb=b.supplier; }
+      else { const ci=parseInt(sortCol); va=lotData[a.partNum]?.[ci]||''; vb=lotData[b.partNum]?.[ci]||''; }
+      return sortDir==='asc'?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va));
     });
   }
   renderTable(lc); updateStats(lc);
@@ -550,14 +556,14 @@ function renderTable(lc) {
   const ct=document.getElementById('table-container');
   document.getElementById('loading-state').style.display='none'; ct.style.display='block';
   if (!filteredRows.length) { ct.innerHTML='<div class="empty-state">No parts match the current filters.</div>'; return; }
-  const sClass = col => sortCol===col ? (sortDir==='asc'?' sort-asc':' sort-desc') : '';
+  const sClass = col => (String(sortCol)===String(col)) ? (sortDir==='asc'?' sort-asc':' sort-desc') : '';
   ct.innerHTML=`<table>
     <thead><tr>
-      <th class="col-part${sClass('part')}" onclick="sortBy('part')">Part Number</th>
-      <th class="col-desc">Description</th>
-      <th class="col-rev">Rev</th>
-      <th class="col-proc">Process</th>
-      <th class="col-supp">Supplier</th>
+      <th class="col-part${sClass('part')}"        onclick="sortBy('part')">Part Number</th>
+      <th class="col-desc${sClass('description')}" onclick="sortBy('description')">Description</th>
+      <th class="col-rev${sClass('revision')}"     onclick="sortBy('revision')">Rev</th>
+      <th class="col-proc${sClass('process')}"     onclick="sortBy('process')">Process</th>
+      <th class="col-supp${sClass('supplier')}"    onclick="sortBy('supplier')">Supplier</th>
       ${lc.map((c,i)=>`<th class="${c.toUpperCase().startsWith('PILOT')?'pilot-col':'dev-col'} lot-cell${sClass(i)}" onclick="sortBy(${i})">${esc(c)}</th>`).join('')}
     </tr></thead>
     <tbody>${filteredRows.map(row=>renderRow(row,lc)).join('')}</tbody>
