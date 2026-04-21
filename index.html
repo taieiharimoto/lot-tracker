@@ -498,7 +498,7 @@ async function loadData() {
   try {
     const [bRows, lRows] = await Promise.all([sheetsGet(CFG.bomSheet), sheetsGet(CFG.lotSheet)]);
     parseBOM(bRows); parseLot(lRows); buildTable();
-    setStatus('online', `${bomData.length} parts · ${new Date().toLocaleTimeString()}`);
+    setStatus('online', `${new Set(bomData.map(r=>r.partNum)).size} parts · ${new Date().toLocaleTimeString()}`);
   } catch(e) {
     setStatus('offline','Error');
     document.getElementById('loading-state').innerHTML = `
@@ -519,11 +519,19 @@ function parseBOM(rows) {
   const ip = fi(['PART NUMBER','PART_NUMBER','PARTNUMBER']), ip2 = ip<0?0:ip;
   const id = fi(['DESCRIPTION','DESC']), ir = fi(['REVISION','REV']), iq = fi(['QTY','QUANTITY']);
   const ipr= fi(['PROCESS']), im= fi(['MATERIAL']), is= fi(['SUPPLIER']), ipa= fi(['IMMEDIATE PARENT']);
-  const seen=new Set(); bomData=[];
+  const partMap=new Map(); bomData=[];
   for (let i=1;i<rows.length;i++) {
     const r=rows[i], pn=String(r[ip2]||'').trim();
-    if (!pn||seen.has(pn)) continue; seen.add(pn);
-    bomData.push({ partNum:pn, description:g(r,id), revision:g(r,ir), qty:g(r,iq), process:g(r,ipr), material:g(r,im), supplier:g(r,is), parent:g(r,ipa) });
+    if (!pn) continue;
+    if (partMap.has(pn)) {
+      // Same part seen again — sum the quantity
+      const existing = partMap.get(pn);
+      existing.qty = String((parseFloat(existing.qty)||0) + (parseFloat(g(r,iq))||0));
+    } else {
+      const entry = { partNum:pn, description:g(r,id), revision:g(r,ir), qty:g(r,iq), process:g(r,ipr), material:g(r,im), supplier:g(r,is), parent:g(r,ipa) };
+      partMap.set(pn, entry);
+      bomData.push(entry);
+    }
   }
 }
 const g = (r,i) => i>=0 ? String(r[i]||'') : '';
@@ -795,9 +803,9 @@ async function parseBOMFile(file) {
           });
         }
 
-        // Dedup: keep first occurrence per (partNum, immediateParent) combo
-        // This mirrors BOM Cleaned behaviour — unique parts get one row,
-        // but parts used in genuinely different parent assemblies keep separate rows
+        // Keep one row per (partNum, immediateParent) — no dedup, no qty summing.
+        // BOM Cleaned is a faithful representation of the BOM tree.
+        // Qty summing happens only in the webapp dashboard display.
         const seenCombos = new Set();
         const cleanedRows = [];
         for (const row of allRows) {
