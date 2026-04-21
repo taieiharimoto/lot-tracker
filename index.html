@@ -706,14 +706,85 @@ async function handleBOMUpload(ev) {
     const parsed = await parseBOMFile(file);
     if (!parsed.cleanedRows.length) { showToast('No parts found in file','error'); return; }
 
-    // Compare against current BOM Cleaned
-    const curParts = new Set(bomData.map(r=>r.partNum));
-    const newParts  = parsed.cleanedRows.filter(r=>!curParts.has(r.partNum));
-    const goneParts = bomData.filter(r=>!new Set(parsed.cleanedRows.map(x=>x.partNum)).has(r.partNum));
+    // Fetch current BOM Cleaned rows directly — compare at (partNum, immediateParent) level
+    // so changes like "part moved from 2 assemblies to 1" are detected as a qty change
+    const currentBomRows = await sheetsGet(CFG.bomSheet);
+    const curH = currentBomRows[0] ? currentBomRows[0].map(c=>String(c).trim().toUpperCase()) : [];
+    const curPnIdx  = curH.indexOf('PART NUMBER');
+    const curParIdx = curH.indexOf('IMMEDIATE PARENT');
+    const curQtyIdx = curH.indexOf('QTY');
+    const curDescIdx= curH.indexOf('DESCRIPTION');
 
-    bomDiff = { cleanedRows: parsed.cleanedRows, newParts, goneParts };
+    // Build current set of (partNum|||parent) keys and per-part total qty
+    const curKeySet   = new Set();
+    const curPartQty  = new Map();   // partNum → summed qty in current BOM Cleaned
+    const curPartDesc = new Map();
+    for (let i=1; i<currentBomRows.length; i++) {
+      const r   = currentBomRows[i];
+      const pn  = String(r[curPnIdx]  || '').trim();
+      const par = String(r[curParIdx] || '').trim();
+      const qty = parseFloat(r[curQtyIdx] || 0) || 0;
+      const desc= String(r[curDescIdx] || '').trim();
+      if (!pn) continue;
+      curKeySet.add(pn + '|||' + par);
+      curPartQty.set(pn, (curPartQty.get(pn) || 0) + qty);
+      if (!curPartDesc.has(pn)) curPartDesc.set(pn, desc);
+    }
 
-    if (!newParts.length && !goneParts.length) {
+    // Build new set and summed qty from uploaded file
+    const newKeySet  = new Set();
+    const newPartQty = new Map();
+    for (const r of parsed.cleanedRows) {
+      newKeySet.add(r.partNum + '|||' + r.immediateParent);
+      newPartQty.set(r.partNum, (newPartQty.get(r.partNum) || 0) + (parseFloat(r.qty) || 0));
+    }
+
+    // New part numbers not in current BOM at all
+    const curPartSet = new Set(curPartQty.keys());
+    const newPartSet = new Set(newPartQty.keys());
+    const newParts   = parsed.cleanedRows
+      .filter(r => !curPartSet.has(r.partNum))
+      .filter((r,i,a) => a.findIndex(x=>x.partNum===r.partNum)===i); // unique by partNum
+
+    // Removed entirely
+    const goneParts = [...curPartSet]
+      .filter(pn => !newPartSet.has(pn))
+      .map(pn => ({ partNum:pn, description: curPartDesc.get(pn)||'' }));
+
+    // Build per-part parent sets for both old and new
+    const curParentsByPart = new Map();
+    for (const key of curKeySet) {
+      const [pn, par] = key.split('|||');
+      if (!curParentsByPart.has(pn)) curParentsByPart.set(pn, new Set());
+      curParentsByPart.get(pn).add(par);
+    }
+    const newParentsByPart = new Map();
+    for (const key of newKeySet) {
+      const [pn, par] = key.split('|||');
+      if (!newParentsByPart.has(pn)) newParentsByPart.set(pn, new Set());
+      newParentsByPart.get(pn).add(par);
+    }
+
+    // Qty changed (part still exists but total qty differs — e.g. removed from one assembly)
+    const qtyChanged = [...curPartSet]
+      .filter(pn => newPartSet.has(pn) && (newPartQty.get(pn)||0) !== (curPartQty.get(pn)||0))
+      .map(pn => {
+        const curParents = curParentsByPart.get(pn) || new Set();
+        const newParents = newParentsByPart.get(pn) || new Set();
+        return {
+          partNum:        pn,
+          description:    curPartDesc.get(pn)||'',
+          oldQty:         curPartQty.get(pn),
+          newQty:         newPartQty.get(pn),
+          removedParents: [...curParents].filter(p=>!newParents.has(p)),
+          addedParents:   [...newParents].filter(p=>!curParents.has(p)),
+        };
+      });
+
+    bomDiff = { cleanedRows: parsed.cleanedRows, newParts, goneParts, qtyChanged };
+
+    const totalChanges = newParts.length + goneParts.length + qtyChanged.length;
+    if (!totalChanges) {
       document.getElementById('bom-ok').style.display='block';
       document.getElementById('bom-diff').style.display='none';
       return;
@@ -721,10 +792,18 @@ async function handleBOMUpload(ev) {
     document.getElementById('bom-ok').style.display='none';
     document.getElementById('bom-diff').style.display='block';
     document.getElementById('diff-count-label').textContent=
-      `${newParts.length} new · ${goneParts.length} removed · ${parsed.cleanedRows.length} total`;
+      `${newParts.length} new · ${goneParts.length} removed · ${qtyChanged.length} qty changed`;
     document.getElementById('diff-list').innerHTML=[
       ...newParts.map(p=>`<div class="diff-row"><span class="diff-tag diff-tag-new">NEW</span><span class="diff-part">${esc(p.partNum)}</span><span class="diff-desc">${esc(p.description)}</span></div>`),
       ...goneParts.map(r=>`<div class="diff-row"><span class="diff-tag diff-tag-gone">REMOVED</span><span class="diff-part">${esc(r.partNum)}</span><span class="diff-desc">${esc(r.description)}</span></div>`),
+      ...qtyChanged.flatMap(r=>[
+        // Header row for the part
+        `<div class="diff-row"><span class="diff-tag" style="background:rgba(37,99,235,.1);color:#1d4ed8;border:1px solid rgba(37,99,235,.25);">QTY</span><span class="diff-part">${esc(r.partNum)}</span><span class="diff-desc">${esc(r.description)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;white-space:nowrap;">${r.oldQty} → ${r.newQty}</span></div>`,
+        // Removed parent rows
+        ...r.removedParents.map(p=>`<div class="diff-row" style="padding-left:32px;background:rgba(220,38,38,.03);"><span class="diff-tag diff-tag-gone" style="font-size:8px;">−PARENT</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);">${esc(p)}</span></div>`),
+        // Added parent rows
+        ...r.addedParents.map(p=>`<div class="diff-row" style="padding-left:32px;background:rgba(5,150,105,.03);"><span class="diff-tag diff-tag-new" style="font-size:8px;">+PARENT</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted);">${esc(p)}</span></div>`),
+      ]),
     ].join('');
   } catch(e) { showToast('Parse error: '+e.message,'error'); console.error(e); }
 }
