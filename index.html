@@ -359,7 +359,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 // ════════════════════════════ CONFIG ════════════════════════════
-let CFG = { clientId:'', sheetId:'', bomSheet:'BOM Cleaned', lotSheet:'Lot Data' };
+// ── Fill these in once — colleagues just open the URL and click Sign in ──
+const DEFAULTS = { clientId:'679739404422-qjl8droia96p45dp0rtrbmdu3sng25ma.apps.googleusercontent.com', sheetId:'1wndo6-hPZfkYh-Fmmtx1Lkv2Qw_S2fv6QxQiawi7TUo', bomSheet:'BOM Cleaned', lotSheet:'Lot Data' };
+let CFG = { ...DEFAULTS };
 let accessToken = null;
 let tokenClient = null;
 
@@ -377,11 +379,21 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 
 // ════════════════════════════ INIT ════════════════════════════
 (function() {
+  // Merge any locally saved overrides (e.g. from Settings tab) on top of hardcoded defaults
   try { CFG = { ...CFG, ...JSON.parse(localStorage.getItem('lottracker_cfg') || '{}') }; } catch(e){}
-  if (CFG.clientId) document.getElementById('cfg-clientid').value = CFG.clientId;
-  if (CFG.sheetId)  document.getElementById('cfg-sheetid').value  = CFG.sheetId;
-  if (CFG.bomSheet !== 'BOM Cleaned') document.getElementById('cfg-bomsheet').value = CFG.bomSheet;
-  if (CFG.lotSheet !== 'Lot Data')    document.getElementById('cfg-lotsheet').value  = CFG.lotSheet;
+  // Always pre-fill the setup form fields
+  document.getElementById('cfg-clientid').value = CFG.clientId;
+  document.getElementById('cfg-sheetid').value  = CFG.sheetId;
+  document.getElementById('cfg-bomsheet').value = CFG.bomSheet;
+  document.getElementById('cfg-lotsheet').value = CFG.lotSheet;
+  // If defaults are hardcoded, skip the setup screen and go straight to sign-in
+  const isDefaulted = CFG.clientId && CFG.clientId !== 'YOUR_CLIENT_ID_HERE'
+                   && CFG.sheetId  && CFG.sheetId  !== 'YOUR_SHEET_ID_HERE';
+  if (isDefaulted) {
+    // Hide the config fields — just show the sign-in button
+    document.querySelectorAll('.setup-field').forEach(el => el.style.display = 'none');
+    document.querySelector('.divider').style.display = 'none';
+  }
 })();
 
 // ════════════════════════════ AUTH ════════════════════════════
