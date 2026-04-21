@@ -550,14 +550,15 @@ function renderTable(lc) {
   const ct=document.getElementById('table-container');
   document.getElementById('loading-state').style.display='none'; ct.style.display='block';
   if (!filteredRows.length) { ct.innerHTML='<div class="empty-state">No parts match the current filters.</div>'; return; }
+  const sClass = col => sortCol===col ? (sortDir==='asc'?' sort-asc':' sort-desc') : '';
   ct.innerHTML=`<table>
     <thead><tr>
-      <th class="col-part" onclick="sortBy('part')">Part Number</th>
+      <th class="col-part${sClass('part')}" onclick="sortBy('part')">Part Number</th>
       <th class="col-desc">Description</th>
       <th class="col-rev">Rev</th>
       <th class="col-proc">Process</th>
       <th class="col-supp">Supplier</th>
-      ${lc.map((c,i)=>`<th class="${c.toUpperCase().startsWith('PILOT')?'pilot-col':'dev-col'} lot-cell" onclick="sortBy(${i})">${esc(c)}</th>`).join('')}
+      ${lc.map((c,i)=>`<th class="${c.toUpperCase().startsWith('PILOT')?'pilot-col':'dev-col'} lot-cell${sClass(i)}" onclick="sortBy(${i})">${esc(c)}</th>`).join('')}
     </tr></thead>
     <tbody>${filteredRows.map(row=>renderRow(row,lc)).join('')}</tbody>
   </table>`;
