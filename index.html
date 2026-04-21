@@ -9,17 +9,17 @@
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
   :root {
-    --bg: #0e0f11;
-    --surface: #16181c;
-    --surface2: #1e2026;
-    --border: #2a2d35;
-    --border2: #383c47;
-    --text: #e8eaf0;
-    --muted: #6b7280;
-    --accent: #f59e0b;
-    --accent2: #3b82f6;
-    --green: #10b981;
-    --red: #ef4444;
+    --bg:       #f5f6f8;
+    --surface:  #ffffff;
+    --surface2: #f0f1f4;
+    --border:   #dde0e8;
+    --border2:  #c8ccd6;
+    --text:     #1a1d23;
+    --muted:    #6b7280;
+    --accent:   #d97706;
+    --accent2:  #2563eb;
+    --green:    #059669;
+    --red:      #dc2626;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'IBM Plex Sans', sans-serif;
   }
@@ -76,7 +76,7 @@
   .btn-danger { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
   .btn-danger:hover { background: rgba(239,68,68,.25); }
 
-  .error-box { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 3px; color: var(--red); font-size: 12px; padding: 10px 14px; margin-top: 14px; display: none; }
+  .error-box { background: rgba(220,38,38,.07); border: 1px solid rgba(220,38,38,.3); border-radius: 3px; color: var(--red); font-size: 12px; padding: 10px 14px; margin-top: 14px; display: none; }
 
   .setup-note { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; line-height: 1.8; }
 
@@ -125,24 +125,24 @@
   th:hover { color: var(--text); }
   th.sort-asc::after  { content: ' ↑'; color: var(--accent); }
   th.sort-desc::after { content: ' ↓'; color: var(--accent); }
-  th.pilot-col { color: #60a5fa; background: rgba(59,130,246,.04); }
-  th.dev-col   { color: #fbbf24; background: rgba(245,158,11,.04); }
-  td { border-bottom: 1px solid var(--border); border-right: 1px solid rgba(42,45,53,.5); vertical-align: middle; padding: 0; }
-  tr:hover td { background: rgba(255,255,255,.018); }
-  tr.row-new td { background: rgba(16,185,129,.03); }
+  th.pilot-col { color: #1d4ed8; background: rgba(37,99,235,.06); }
+  th.dev-col   { color: #b45309; background: rgba(217,119,6,.06); }
+  td { border-bottom: 1px solid var(--border); border-right: 1px solid rgba(0,0,0,.06); vertical-align: middle; padding: 0; }
+  tr:hover td { background: rgba(0,0,0,.03); }
+  tr.row-new td { background: rgba(5,150,105,.06); }
   .td-inner { padding: 6px 12px; min-height: 34px; display: flex; align-items: center; }
   .part-num { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--accent); white-space: nowrap; }
   .desc-text { font-size: 11px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .process-badge { font-family: var(--mono); font-size: 9px; letter-spacing: .08em; padding: 2px 7px; border-radius: 2px; text-transform: uppercase; white-space: nowrap; }
-  .proc-MACHINED { background:rgba(59,130,246,.15); color:#60a5fa; border:1px solid rgba(59,130,246,.3); }
-  .proc-ASSEMBLY { background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.3); }
-  .proc-PCB      { background:rgba(139,92,246,.15); color:#a78bfa; border:1px solid rgba(139,92,246,.3); }
-  .proc-DIECAST  { background:rgba(245,158,11,.15);  color:#fbbf24; border:1px solid rgba(245,158,11,.3); }
-  .proc-OTS      { background:rgba(107,114,128,.15); color:#9ca3af; border:1px solid rgba(107,114,128,.3); }
-  .proc-DEFAULT  { background:rgba(107,114,128,.08); color:#6b7280; border:1px solid rgba(107,114,128,.2); }
+  .proc-MACHINED { background:rgba(37,99,235,.1); color:#1d4ed8; border:1px solid rgba(37,99,235,.25); }
+  .proc-ASSEMBLY { background:rgba(5,150,105,.1); color:#065f46; border:1px solid rgba(5,150,105,.25); }
+  .proc-PCB      { background:rgba(109,40,217,.1); color:#5b21b6; border:1px solid rgba(109,40,217,.25); }
+  .proc-DIECAST  { background:rgba(217,119,6,.1);   color:#92400e; border:1px solid rgba(217,119,6,.25); }
+  .proc-OTS      { background:rgba(107,114,128,.1);  color:#374151; border:1px solid rgba(107,114,128,.25); }
+  .proc-DEFAULT  { background:rgba(107,114,128,.08); color:#4b5563; border:1px solid rgba(107,114,128,.2); }
   .col-part { min-width:130px; width:130px; } .col-desc { min-width:200px; width:200px; }
   .col-rev  { min-width:44px;  width:44px;  } .col-proc { min-width:105px; width:105px; }
-  .col-supp { min-width:100px; width:100px; }
+  .col-supp { min-width:100px; width:100px; } .col-parent { min-width:160px; width:160px; } .col-qty { min-width:52px; width:52px; text-align:right; }
 
   /* ─── LOT CELLS ─── */
   .lot-cell { min-width: 96px; max-width: 150px; }
@@ -170,8 +170,8 @@
   .diff-row   { display: flex; align-items: center; padding: 8px 16px; border-bottom: 1px solid rgba(42,45,53,.5); gap: 14px; font-size: 12px; }
   .diff-row:last-child { border-bottom: none; }
   .diff-tag { font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 2px; flex-shrink: 0; }
-  .diff-tag-new  { background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.3); }
-  .diff-tag-gone { background:rgba(239,68,68,.15);  color:#f87171; border:1px solid rgba(239,68,68,.3); }
+  .diff-tag-new  { background:rgba(5,150,105,.1);  color:#065f46; border:1px solid rgba(5,150,105,.3); }
+  .diff-tag-gone { background:rgba(220,38,38,.1);   color:#991b1b; border:1px solid rgba(220,38,38,.3); }
   .diff-part { font-family: var(--mono); font-size: 11px; color: var(--accent); white-space: nowrap; }
   .diff-desc { color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .action-row { display: flex; gap: 10px; align-items: center; }
@@ -189,7 +189,7 @@
   .toast.success { border-color: rgba(16,185,129,.5); }
   .toast.error   { border-color: rgba(239,68,68,.5); }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-track { background: var(--surface2); }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 </style>
 </head>
@@ -304,33 +304,38 @@
 
     <!-- BOM SYNC -->
     <div id="tab-bom" style="display:none;padding:32px;overflow:auto;height:100%;">
-      <div class="section-title">BOM Sync — Upload New BOM Export</div>
+      <div class="section-title">BOM Sync — Upload New SolidWorks BOM Export</div>
       <p style="color:var(--muted);font-size:12px;margin-bottom:24px;line-height:1.7;">
-        Upload a SolidWorks BOM export (.xlsx, .xls, .csv). The app compares it against the current Lot Data
-        sheet and shows new or removed parts. New parts get appended with empty lot columns.
+        Upload a raw SolidWorks BOM export (.xlsx, .xls, .csv). The app will derive clean part numbers,
+        rebuild <strong style="color:var(--text)">BOM Cleaned</strong> in the GSheet, and sync any new parts
+        into <strong style="color:var(--text)">Lot Data</strong>. Existing lot entries are never touched.
       </p>
       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="upload-icon">⬆</div>
-        <div class="upload-text">Drop a BOM file here, or click to browse</div>
-        <div class="upload-hint">Expects PART NUMBER in the first column</div>
+        <div class="upload-text">Drop a SolidWorks BOM export here, or click to browse</div>
+        <div class="upload-hint">Needs ITEM NO., PART NUMBER, SW-CONFIGURATION NAME columns</div>
       </div>
       <input type="file" id="file-input" accept=".csv,.xlsx,.xls" onchange="handleBOMUpload(event)">
       <div id="bom-diff" style="display:none;">
         <div class="diff-wrap">
           <div class="diff-header">
-            <span>Changes detected</span>
+            <span>Changes vs current BOM Cleaned</span>
             <span class="diff-count" id="diff-count-label"></span>
           </div>
           <div class="diff-list" id="diff-list"></div>
         </div>
-        <div class="action-row">
+        <div style="margin-top:12px;padding:12px 16px;background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.3);border-radius:3px;font-family:var(--mono);font-size:10px;color:var(--accent);line-height:1.8;">
+          ◆ BOM Cleaned will be fully replaced with data from this upload<br>
+          ◆ Lot Data: new parts will be appended · existing lot entries unchanged
+        </div>
+        <div class="action-row" style="margin-top:16px;">
           <button class="btn btn-primary" id="btn-sync" onclick="syncBOM()">Sync to Sheet →</button>
           <button class="btn btn-ghost" onclick="clearDiff()">Cancel</button>
           <span class="sync-msg" id="sync-msg"></span>
         </div>
       </div>
       <div id="bom-ok" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:24px;text-align:center;">
-        <p style="font-family:var(--mono);font-size:12px;color:var(--green);">✓ Lot Data is already up to date.</p>
+        <p style="font-family:var(--mono);font-size:12px;color:var(--green);">✓ BOM Cleaned is already up to date — no changes detected.</p>
       </div>
     </div>
 
@@ -360,7 +365,7 @@
 <script>
 // ════════════════════════════ CONFIG ════════════════════════════
 // ── Fill these in once — colleagues just open the URL and click Sign in ──
-const DEFAULTS = { clientId:'679739404422-qjl8droia96p45dp0rtrbmdu3sng25ma.apps.googleusercontent.com', sheetId:'1wndo6-hPZfkYh-Fmmtx1Lkv2Qw_S2fv6QxQiawi7TUo', bomSheet:'BOM Cleaned', lotSheet:'Lot Data' };
+const DEFAULTS = { clientId:'YOUR_CLIENT_ID_HERE', sheetId:'YOUR_SHEET_ID_HERE', bomSheet:'BOM Cleaned', lotSheet:'Lot Data' };
 let CFG = { ...DEFAULTS };
 let accessToken = null;
 let tokenClient = null;
@@ -474,6 +479,14 @@ async function sheetsAppend(sheet, values) {
   if (!r.ok) throw new Error(d.error?.message || `HTTP ${r.status}`);
 }
 
+async function sheetsClear(sheet) {
+  const range = `${sheet}`;
+  const r = await fetch(`${BASE}/${CFG.sheetId}/values/${enc(range)}:clear`,
+    auth({ method:'POST', headers:{'Content-Type':'application/json'} }));
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error?.message || `HTTP ${r.status}`);
+}
+
 const enc = s => encodeURIComponent(s);
 
 // ════════════════════════════ LOAD ════════════════════════════
@@ -549,7 +562,7 @@ function applyFilters() {
     return true;
   });
   if (sortCol!==null) {
-    const metaCols = ['part','description','revision','process','supplier'];
+    const metaCols = ['part','description','revision','process','supplier','parent','qty'];
     filteredRows.sort((a,b)=>{
       let va, vb;
       if      (sortCol==='part')        { va=a.partNum;     vb=b.partNum; }
@@ -557,6 +570,8 @@ function applyFilters() {
       else if (sortCol==='revision')    { va=a.revision;    vb=b.revision; }
       else if (sortCol==='process')     { va=a.process;     vb=b.process; }
       else if (sortCol==='supplier')    { va=a.supplier;    vb=b.supplier; }
+      else if (sortCol==='parent')      { va=a.parent;      vb=b.parent; }
+      else if (sortCol==='qty')         { return sortDir==='asc' ? (parseFloat(a.qty)||0)-(parseFloat(b.qty)||0) : (parseFloat(b.qty)||0)-(parseFloat(a.qty)||0); }
       else { const ci=parseInt(sortCol); va=lotData[a.partNum]?.[ci]||''; vb=lotData[b.partNum]?.[ci]||''; }
       return sortDir==='asc'?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va));
     });
@@ -574,8 +589,10 @@ function renderTable(lc) {
       <th class="col-part${sClass('part')}"        onclick="sortBy('part')">Part Number</th>
       <th class="col-desc${sClass('description')}" onclick="sortBy('description')">Description</th>
       <th class="col-rev${sClass('revision')}"     onclick="sortBy('revision')">Rev</th>
+      <th class="col-qty${sClass('qty')}"           onclick="sortBy('qty')">Qty</th>
       <th class="col-proc${sClass('process')}"     onclick="sortBy('process')">Process</th>
       <th class="col-supp${sClass('supplier')}"    onclick="sortBy('supplier')">Supplier</th>
+      <th class="col-parent${sClass('parent')}" onclick="sortBy('parent')">Immediate Parent</th>
       ${lc.map((c,i)=>`<th class="${c.toUpperCase().startsWith('PILOT')?'pilot-col':'dev-col'} lot-cell${sClass(i)}" onclick="sortBy(${i})">${esc(c)}</th>`).join('')}
     </tr></thead>
     <tbody>${filteredRows.map(row=>renderRow(row,lc)).join('')}</tbody>
@@ -588,8 +605,10 @@ function renderRow(row,lc) {
     <td class="col-part"><div class="td-inner"><span class="part-num">${esc(row.partNum)}</span></div></td>
     <td class="col-desc"><div class="td-inner"><span class="desc-text" title="${esc(row.description)}">${esc(row.description)}</span></div></td>
     <td class="col-rev"><div class="td-inner"><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${esc(row.revision)}</span></div></td>
+    <td class="col-qty"><div class="td-inner" style="justify-content:flex-end;padding-right:14px;"><span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text)">${esc(row.qty||'—')}</span></div></td>
     <td class="col-proc"><div class="td-inner"><span class="process-badge ${pClass(row.process)}">${esc(row.process||'—')}</span></div></td>
     <td class="col-supp"><div class="td-inner"><span style="font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:95px" title="${esc(row.supplier)}">${esc(row.supplier||'—')}</span></div></td>
+    <td class="col-parent"><div class="td-inner"><span style="font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:155px" title="${esc(row.parent)}">${esc(row.parent||'—')}</span></div></td>
     ${lc.map((c,i)=>{
       const v=vals[i]||'', isPilot=c.toUpperCase().startsWith('PILOT');
       return `<td class="lot-cell ${isPilot?'pilot-col':'dev-col'}">
@@ -676,40 +695,119 @@ function adjacent(el,back) {
 async function handleBOMUpload(ev) {
   const file=ev.target.files[0]; if(!file) return; ev.target.value='';
   try {
-    const up=await parseBOMFile(file);
-    if (!up.length) { showToast('No part numbers found','error'); return; }
-    const cur=new Set(bomData.map(r=>r.partNum)), ups=new Set(up.map(p=>p.partNum));
-    const newP=up.filter(p=>!cur.has(p.partNum)), goneP=bomData.filter(r=>!ups.has(r.partNum));
-    bomDiff={newP,goneP};
-    if (!newP.length&&!goneP.length) {
-      document.getElementById('bom-ok').style.display='block'; document.getElementById('bom-diff').style.display='none'; return;
+    const parsed = await parseBOMFile(file);
+    if (!parsed.cleanedRows.length) { showToast('No parts found in file','error'); return; }
+
+    // Compare against current BOM Cleaned
+    const curParts = new Set(bomData.map(r=>r.partNum));
+    const newParts  = parsed.cleanedRows.filter(r=>!curParts.has(r.partNum));
+    const goneParts = bomData.filter(r=>!new Set(parsed.cleanedRows.map(x=>x.partNum)).has(r.partNum));
+
+    bomDiff = { cleanedRows: parsed.cleanedRows, newParts, goneParts };
+
+    if (!newParts.length && !goneParts.length) {
+      document.getElementById('bom-ok').style.display='block';
+      document.getElementById('bom-diff').style.display='none';
+      return;
     }
-    document.getElementById('bom-ok').style.display='none'; document.getElementById('bom-diff').style.display='block';
-    document.getElementById('diff-count-label').textContent=`${newP.length} new · ${goneP.length} removed`;
+    document.getElementById('bom-ok').style.display='none';
+    document.getElementById('bom-diff').style.display='block';
+    document.getElementById('diff-count-label').textContent=
+      `${newParts.length} new · ${goneParts.length} removed · ${parsed.cleanedRows.length} total`;
     document.getElementById('diff-list').innerHTML=[
-      ...newP.map(p=>`<div class="diff-row"><span class="diff-tag diff-tag-new">NEW</span><span class="diff-part">${esc(p.partNum)}</span><span class="diff-desc">${esc(p.description)}</span></div>`),
-      ...goneP.map(r=>`<div class="diff-row"><span class="diff-tag diff-tag-gone">REMOVED</span><span class="diff-part">${esc(r.partNum)}</span><span class="diff-desc">${esc(r.description)}</span></div>`),
+      ...newParts.map(p=>`<div class="diff-row"><span class="diff-tag diff-tag-new">NEW</span><span class="diff-part">${esc(p.partNum)}</span><span class="diff-desc">${esc(p.description)}</span></div>`),
+      ...goneParts.map(r=>`<div class="diff-row"><span class="diff-tag diff-tag-gone">REMOVED</span><span class="diff-part">${esc(r.partNum)}</span><span class="diff-desc">${esc(r.description)}</span></div>`),
     ].join('');
-  } catch(e) { showToast('Parse error: '+e.message,'error'); }
+  } catch(e) { showToast('Parse error: '+e.message,'error'); console.error(e); }
 }
 
+// Parse raw SW BOM export → derive clean part numbers + all metadata + immediate parent
+// Replicates the BOM Helper + BOM Cleaned GSheet logic entirely in JS
 async function parseBOMFile(file) {
   return new Promise((res,rej)=>{
     const reader=new FileReader();
     reader.onload=ev=>{
       try {
-        const wb=XLSX.read(ev.target.result,{type:'array'}), ws=wb.Sheets[wb.SheetNames[0]];
-        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-        if (!rows.length){res([]);return;}
-        const h=rows[0].map(c=>String(c).trim().toUpperCase());
-        const pi=Math.max(0,h.findIndex(c=>c.includes('PART')&&c.includes('NUMBER')));
-        const di=h.findIndex(c=>c.includes('DESC'));
-        const seen=new Set(), parts=[];
-        for(let i=1;i<rows.length;i++){
-          const pn=String(rows[i][pi]||'').trim(); if(!pn||seen.has(pn)) continue; seen.add(pn);
-          parts.push({partNum:pn,description:di>=0?String(rows[i][di]||''):''});
+        const wb   = XLSX.read(ev.target.result,{type:'array'});
+        const ws   = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        if (!rows.length){res({cleanedRows:[]});return;}
+
+        const h = rows[0].map(c=>String(c).replace(/\n/g,' ').trim().toUpperCase());
+
+        // Column indices
+        const iItem   = h.findIndex(c=>c.includes('ITEM'));
+        const iRawPn  = h.findIndex(c=>c.includes('PART')&&c.includes('NUMBER'));
+        const iConfig = h.findIndex(c=>c.includes('CONFIG')||c.includes('SW-CONF'));
+        const iRev    = h.findIndex(c=>c==='REVISION'||c==='REV');
+        const iDesc   = h.findIndex(c=>c.includes('DESC'));
+        const iQty    = h.findIndex(c=>c==='QTY.'||c==='QTY'||c==='QUANTITY');
+        const iProc   = h.findIndex(c=>c==='PROCESS');
+        const iMat    = h.findIndex(c=>c==='MATERIAL');
+        const iFin    = h.findIndex(c=>c==='FINISH');
+        const iSup    = h.findIndex(c=>c==='SUPPLIER');
+        const iSupNo  = h.findIndex(c=>c==='SUPPLIERNO'||c==='SUPPLIER NO');
+
+        const gv = (row,i) => i>=0 ? String(row[i]||'').trim() : '';
+
+        // BOM Helper formula: LEFT(TRIM(rawPn),8) + "-0" + suffix if config has "-"
+        function derivePn(rawPn, config) {
+          const base = rawPn.trim().substring(0,8);
+          const idx  = config.indexOf('-');
+          return idx>=0 ? base+'-0'+config.substring(idx+1) : base;
         }
-        res(parts);
+
+        // Build item→description map for immediate parent lookup
+        const itemDescMap = {};
+        for (let i=1;i<rows.length;i++) {
+          const item = gv(rows[i],iItem);
+          const desc = gv(rows[i],iDesc);
+          if (item) itemDescMap[item] = desc;
+        }
+
+        function immediateParent(itemNo) {
+          const parts = itemNo.split('.');
+          if (parts.length<=1) return 'TOP LEVEL';
+          const parentItem = parts.slice(0,-1).join('.');
+          return itemDescMap[parentItem] || 'TOP LEVEL';
+        }
+
+        // Build all rows with derived part numbers + full metadata
+        const allRows = [];
+        for (let i=1;i<rows.length;i++) {
+          const rawPn = gv(rows[i], iRawPn);
+          if (!rawPn) continue;
+          const config = gv(rows[i], iConfig);
+          const pn     = derivePn(rawPn, config);
+          const item   = gv(rows[i], iItem);
+          allRows.push({
+            partNum:         pn,
+            itemNo:          item,
+            description:     gv(rows[i],iDesc),
+            revision:        gv(rows[i],iRev),
+            qty:             gv(rows[i],iQty) || '1',
+            process:         gv(rows[i],iProc),
+            material:        gv(rows[i],iMat),
+            finish:          gv(rows[i],iFin),
+            supplier:        gv(rows[i],iSup),
+            supplierNo:      gv(rows[i],iSupNo),
+            immediateParent: immediateParent(item),
+          });
+        }
+
+        // Dedup: keep first occurrence per (partNum, immediateParent) combo
+        // This mirrors BOM Cleaned behaviour — unique parts get one row,
+        // but parts used in genuinely different parent assemblies keep separate rows
+        const seenCombos = new Set();
+        const cleanedRows = [];
+        for (const row of allRows) {
+          const key = row.partNum + '|||' + row.immediateParent;
+          if (seenCombos.has(key)) continue;
+          seenCombos.add(key);
+          cleanedRows.push(row);
+        }
+
+        res({ cleanedRows });
       } catch(err){rej(err);}
     };
     reader.onerror=rej; reader.readAsArrayBuffer(file);
@@ -719,26 +817,43 @@ async function parseBOMFile(file) {
 async function syncBOM() {
   if (!bomDiff) return;
   const btn=document.getElementById('btn-sync'), msg=document.getElementById('sync-msg');
-  btn.disabled=true; msg.textContent='Syncing…';
+  btn.disabled=true;
+
   try {
-    // Re-fetch current lot data immediately before writing to avoid races
+    const { cleanedRows, newParts } = bomDiff;
+
+    // ── Step 1: Overwrite BOM Cleaned entirely ──
+    msg.textContent='Writing BOM Cleaned…';
+    const bomHeader = ['PART NUMBER','DESCRIPTION','REVISION','QTY','PROCESS','MATERIAL','FINISH','SUPPLIER','SUPPLIER NO','IMMEDIATE PARENT'];
+    const bomRows   = cleanedRows.map(r=>[
+      r.partNum, r.description, r.revision, r.qty,
+      r.process, r.material, r.finish, r.supplier, r.supplierNo, r.immediateParent
+    ]);
+    // Clear existing content then write fresh
+    await sheetsClear(CFG.bomSheet);
+    await sheetsAppend(CFG.bomSheet, [bomHeader, ...bomRows]);
+
+    // ── Step 2: Append new parts to Lot Data ──
+    msg.textContent='Updating Lot Data…';
     const freshLot = await sheetsGet(CFG.lotSheet);
     parseLot(freshLot);
     const existing = new Set(Object.keys(lotData));
-
-    // Only append parts that truly aren't in the sheet yet
-    const toAdd = bomDiff.newP.filter(p => !existing.has(p.partNum));
+    const toAdd    = newParts.filter(p=>!existing.has(p.partNum));
     if (toAdd.length) {
-      const rows = toAdd.map(p => [p.partNum, ...Array(lotHeaders.length - 1).fill('')]);
-      await sheetsAppend(CFG.lotSheet, rows);
+      const newRows = toAdd.map(p=>[p.partNum,...Array(lotHeaders.length-1).fill('')]);
+      await sheetsAppend(CFG.lotSheet, newRows);
     }
-    const skipped = bomDiff.newP.length - toAdd.length;
-    const msg2 = skipped > 0
-      ? `✓ Added ${toAdd.length} part(s) · skipped ${skipped} already present`
-      : `✓ Added ${toAdd.length} part(s)`;
-    showToast(msg2, 'success');
-    clearDiff(); await loadData();
-  } catch(e) { msg.textContent='Error: '+e.message; btn.disabled=false; showToast('Sync failed: '+e.message,'error'); }
+
+    const summary = `✓ BOM Cleaned updated (${cleanedRows.length} parts) · ${toAdd.length} new in Lot Data`;
+    showToast(summary,'success');
+    clearDiff();
+    await loadData();
+  } catch(e) {
+    msg.textContent='Error: '+e.message;
+    btn.disabled=false;
+    showToast('Sync failed: '+e.message,'error');
+    console.error(e);
+  }
 }
 
 function clearDiff() {
